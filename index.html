@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hard Math Challenge</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #fff;
+      padding: 20px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 40px 36px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle { color: #a1a1aa; margin-bottom: 28px; font-size: 0.95rem; }
+    .question {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 12px;
+      padding: 22px 18px;
+      margin-bottom: 28px;
+      font-size: 1.2rem;
+      line-height: 1.55;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+      font-size: 1.15rem;
+      text-align: center;
+      outline: none;
+      margin-bottom: 16px;
+    }
+    input[type="text"]:focus { background: rgba(255, 255, 255, 0.18); }
+    input::placeholder { color: #71717a; }
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #7c3aed, #2563eb);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    button:hover { transform: translateY(-2px); }
+    #result {
+      margin-top: 24px;
+      font-size: 1.15rem;
+      min-height: 28px;
+      font-weight: 500;
+    }
+    .correct { color: #4ade80; }
+    .wrong { color: #f87171; }
+    #videoContainer { display: none; margin-top: 28px; }
+    video {
+      width: 100%;
+      border-radius: 12px;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Hard Math Challenge</h1>
+    <p class="subtitle">Only the brave get it right…</p>
+
+    <div class="question">
+      A number is multiplied by 4, then 8 is added.<br>
+      The result is divided by 2, and finally 5 is subtracted.<br>
+      The final answer is 11.<br><br>
+      <strong>What was the original number?</strong>
+    </div>
+
+    <input type="text" id="answer" placeholder="Enter your answer..." autocomplete="off">
+    <button onclick="checkAnswer()">Check Answer</button>
+
+    <div id="result"></div>
+
+    <div id="videoContainer">
+      <video id="failVideo" controls playsinline>
+        <source src="wrong.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <script>
+    const correctAnswer = 6;
+
+    function checkAnswer() {
+      const userInput = document.getElementById('answer').value.trim();
+      const resultDiv = document.getElementById('result');
+      const videoContainer = document.getElementById('videoContainer');
+      const video = document.getElementById('failVideo');
+
+      videoContainer.style.display = 'none';
+      video.pause();
+      video.currentTime = 0;
+
+      if (userInput === '') {
+        resultDiv.textContent = 'Please enter an answer.';
+        resultDiv.className = 'wrong';
+        return;
+      }
+
+      if (Number(userInput) === correctAnswer) {
+        resultDiv.textContent = 'Correct! You are a legend.';
+        resultDiv.className = 'correct';
+      } else {
+        resultDiv.textContent = 'Wrong! Watch this…';
+        resultDiv.className = 'wrong';
+        videoContainer.style.display = 'block';
+        video.play().catch(() => {});
+      }
+    }
+
+    document.getElementById('answer').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') checkAnswer();
+    });
+  </script>
+</body>
+</html>
